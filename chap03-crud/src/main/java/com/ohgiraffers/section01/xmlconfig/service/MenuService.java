@@ -5,7 +5,6 @@ import com.ohgiraffers.section01.xmlconfig.model.MenuDAO;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
-import java.util.Map;
 
 import static com.ohgiraffers.common.Template.getSqlSession;
 
