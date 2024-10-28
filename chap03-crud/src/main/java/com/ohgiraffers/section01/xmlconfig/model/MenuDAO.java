@@ -4,7 +4,7 @@ import com.ohgiraffers.dto.MenuDTO;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
-import java.util.Map;
+
 
 public class MenuDAO {
 
@@ -14,7 +14,12 @@ public class MenuDAO {
     }
 
     public MenuDTO selectMenuByCode(SqlSession sqlSession, int code) {
-
         return sqlSession.selectOne("MenuMapper.selectMenuByCode", code);
     }
+
+    public int insertMenu(SqlSession sqlSession, MenuDTO menu) {
+        return sqlSession.insert("MenuMapper.insertMenu", menu);
+    }
+
+
 }
