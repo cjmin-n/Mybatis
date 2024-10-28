@@ -6,7 +6,6 @@ import com.ohgiraffers.section01.xmlconfig.service.MenuService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 
 // 매핑/뷰
@@ -61,6 +60,38 @@ public class MenuController {
             printResult.printSuccessMessage("insert");
         }else {
             printResult.printErrorMessage("insert");
+        }
+    }
+
+    public void modifyMenu(Map<String, String> parameter) {
+
+        int code = Integer.parseInt(parameter.get("code"));
+        String name = parameter.get("name");
+        int price = Integer.parseInt(parameter.get("price"));
+        int categoryCode = Integer.parseInt(parameter.get("categoryCode"));
+
+        MenuDTO menu = new MenuDTO();
+        menu.setCode(code);
+        menu.setName(name);
+        menu.setPrice(price);
+        menu.setCategoryCode(categoryCode);
+
+        if(menuService.modifyMenu(menu)){
+            printResult.printSuccessMessage("update");
+        }else {
+            printResult.printErrorMessage("update");
+        }
+
+    }
+
+    public void deleteMenu(Map<String, String> parameter) {
+
+        int code = Integer.parseInt(parameter.get("code"));
+
+        if(menuService.deleteMenu(code)){
+            printResult.printSuccessMessage("delete");
+        }else {
+            printResult.printErrorMessage("delete");
         }
     }
 }

@@ -56,4 +56,18 @@
             'Y'
         )
     </insert>
+
+    <update id="updateMenu" parameterType="com.ohgiraffers.dto.MenuDTO">
+        UPDATE TBL_MENU
+          SET
+            MENU_NAME = #{name},
+            MENU_PRICE = #{price},
+            CATEGORY_CODE = #{categoryCode}
+         WHERE MENU_CODE = #{code}
+    </update>
+
+    <delete id="deleteMenu">
+        DELETE FROM TBL_MENU
+        WHERE MENU_CODE = ${code}
+    </delete>
 </mapper>
