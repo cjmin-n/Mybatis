@@ -42,4 +42,60 @@
             AND MENU_PRICE BETWEEN 30000 AND #{price}
         </if>
     </select>
+
+    <select id="searchMenu" parameterType="SearchCriteria" resultMap="menuResultMap">
+        SELECT
+            A.MENU_CODE,
+            A.MENU_NAME,
+            A.MENU_PRICE,
+            A.CATEGORY_CODE,
+            A.ORDERABLE_STATUS
+          FROM TBL_MENU A
+        <if test="condition == 'category'">
+            JOIN TBL_CATEGORY B ON (A.CATEGORY_CODE = B.CATEGORY_CODE)
+        </if>
+         WHERE A.ORDERABLE_STATUS = 'Y'
+        <if test="condition == 'name'">
+            AND A.MENU_NAME LIKE CONCAT('%', #{value}, '%')
+        </if>
+        <if test="condition == 'category'">
+            AND B.CATEGORY_NAME = #{value}
+        </if>
+    </select>
+
+    <!-- <choose> 태그 : 자바의 switch-case 문 역할을 한다. -->
+    <!--
+        <choose>
+            <when test = 조건>
+                쿼리구문
+            </when>
+            ...
+            <otherwise>
+                쿼리구문
+            </otherwise>
+            어떠한 when 조건도 충족하지 못하면 otherwise 구문을 쿼리에 포함한다.
+        </choose>
+    -->
+    <select id="searchMenuBySupCategory" parameterType="SearchCriteria" resultMap="menuResultMap">
+        SELECT
+            A.MENU_CODE,
+            A.MENU_NAME,
+            A.MENU_PRICE,
+            A.CATEGORY_CODE,
+            A.ORDERABLE_STATUS
+          FROM TBL_MENU A
+          JOIN TBL_CATEGORY B ON (A.CATEGORY_CODE = B.CATEGORY_CODE)
+         WHERE A.ORDERABLE_STATUS = 'Y'
+         <choose>
+             <when test="value == '식사'">
+                 AND B.REF_CATEGORY_CODE = 1
+             </when>
+             <when test="value == '음료'">
+                 AND B.REF_CATEGORY_CODE = 2
+             </when>
+             <otherwise>
+                 AND B.REF_CATEGORY_CODE = 3
+             </otherwise>
+         </choose>
+    </select>
 </mapper>
