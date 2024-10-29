@@ -98,4 +98,45 @@
              </otherwise>
          </choose>
     </select>
+
+    <!--
+        <foreach> 태그 : 자바의 for 문 역할을 한다.
+          1. collection 속성 : 반복을 수행할 대상
+          2. item 속성 : 반복을 수행할 때마다 꺼내올 값의 이름 설정
+          3. open 속성 : foreach 엘리먼트 구문의 가장 앞에 올 문자
+          4. separator 속성 : 반복이 수행될 때 꺼내온 item 사이에 들어갈 문자
+          5. close 속성 : 구문의 가장 마지막에 올 문자
+    -->
+    <select id="searchMenuByRandomMenuCode" parameterType="hashmap" resultMap="menuResultMap">
+        SELECT
+            MENU_CODE,
+            MENU_NAME,
+            MENU_PRICE,
+            CATEGORY_CODE,
+            ORDERABLE_STATUS
+          FROM TBL_MENU
+         WHERE ORDERABLE_STATUS = 'Y'
+           AND MENU_CODE IN
+        <foreach collection="randomMenuCodeList" item="menuCode" open="(" separator=", " close=")">
+            #{menuCode}
+        </foreach>
+    </select>
+
+
+    <!-- trim : 위의 조건이 성립하지 않을 때 에러방지를 위해 사용함 -->
+    <!-- *문제없는 ver -->
+    <select id="searchMenuByCodeOrSearchAll" parameterType="SearchCriteria" resultMap="menuResultMap">
+        SELECT
+            MENU_CODE,
+            MENU_NAME,
+            MENU_PRICE,
+            CATEGORY_CODE,
+            ORDERABLE_STATUS
+          FROM TBL_MENU
+        <if test="condition != null and condition eq 'menuCode'">
+            WHERE MENU_CODE = #{value}
+        </if>
+    </select>
+
+
 </mapper>
