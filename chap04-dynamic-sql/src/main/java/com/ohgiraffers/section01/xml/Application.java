@@ -165,12 +165,13 @@ public class Application {
 
             switch (no){
                 case 1: menuService.searchMenuByCodeOrSearchAll(inputAllOrOne()); break;
-                case 2:  break;
-                case 3:  break;
+                case 2: menuService.searchMenuByNameOrCategory(inputSearchCriteriaMap()); break;
+                case 3: menuService.modifyMenu(inputChangeInfo()); break;
                 case 9: return;
             }
         } while(true);
     }
+
 
     private static SearchCriteria inputAllOrOne() {
 
@@ -188,5 +189,56 @@ public class Application {
         return searchCriteria;
     }
 
+    private static Map<String, Object> inputSearchCriteriaMap() {
 
+        Scanner scr = new Scanner(System.in);
+        System.out.println("검색할 조건을 입력 해주세요 : ( category or name or both or null )");
+        String condition = scr.nextLine();
+        Map<String, Object> criteria = new HashMap<>();
+
+        if("category".equals(condition)){
+            System.out.println("검색할 카테고리 코드를 입력 해주세요 : ");
+            int categoryCode = scr.nextInt();
+
+            criteria.put("categoryValue", categoryCode);
+        }else if("name".equals(condition)){
+            System.out.println("검색할 메뉴 이름을 입력 해주세요 : ");
+            String nameValue = scr.nextLine();
+
+            criteria.put("nameValue", nameValue);
+        }else if("both".equals(condition)){
+            System.out.println("검색할 메뉴 이름을 입력 해주세요 : ");
+            String nameValue = scr.nextLine();
+            System.out.println("검색할 카테고리 코드를 입력 해주세요 : ");
+            int categoryCode = scr.nextInt();
+
+            criteria.put("nameValue", nameValue);
+            criteria.put("categoryValue", categoryCode);
+        }
+
+        return criteria;
+    }
+
+
+    private static Map<String, Object> inputChangeInfo() {
+
+        Scanner scr = new Scanner(System.in);
+        System.out.println("변경할 메뉴 코드를 입력 해주세요 : ");
+        int code = scr.nextInt();
+        System.out.println("변경할 메뉴 이름을 입력 해주세요 : ");
+        scr.nextLine();
+        String name = scr.nextLine();
+        System.out.println("변경할 카테고리 코드를 입력 해주세요 : ");
+        String categoryCode = scr.nextLine();
+        System.out.println("판매 여부를 결정 해주세요. (Y, N)");
+        String orderableStatus = scr.nextLine();
+
+        Map<String, Object> criteria = new HashMap<>();
+        criteria.put("code", code);
+        criteria.put("name", name);
+        criteria.put("categoryCode", categoryCode);
+        criteria.put("orderableStatus", orderableStatus);
+
+        return criteria;
+    }
 }
